@@ -10,10 +10,13 @@ function FormularioTarea({ onTareaCreada }) {
     if (!titulo.trim()) return;
 
     axios
-      .post("http://localhost:8000/api/crear_tarea/", {
-        titulo,
-        completada: false,
-      })
+      .post(
+        "https://apicodeaderdocumentacion-production.up.railway.app/api/crear_tarea/",
+        {
+          titulo,
+          completada: false,
+        },
+      )
       .then((res) => {
         onTareaCreada(res.data); // para actualizar la lista
         setTitulo("");

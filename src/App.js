@@ -7,7 +7,9 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/tareas/")
+      .get(
+        "https://apicodeaderdocumentacion-production.up.railway.app/api/tareas/",
+      )
       .then((res) => setTareas(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -18,7 +20,9 @@ function App() {
 
   const toggleCompletada = (id) => {
     axios
-      .patch(`http://localhost:8000/api/tareas/${id}/toggle-completada/`)
+      .patch(
+        `https://apicodeaderdocumentacion-production.up.railway.app/api/tareas/${id}/toggle-completada/`,
+      )
       .then((res) => {
         const nuevasTareas = tareas.map((tarea) =>
           tarea.id === id ? res.data : tarea,
