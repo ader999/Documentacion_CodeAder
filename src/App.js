@@ -1,49 +1,33 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import FormularioTarea from "./FormularioTarea";
+import FormularioDocumento from "./FormularioDocumento";
 
 function App() {
-  const [tareas, setTareas] = useState([]);
+  const [documentos, setDocumentos] = useState([]);
 
   useEffect(() => {
     axios
       .get(
-        "https://apicodeaderdocumentacion-production.up.railway.app/api/tareas/",
+        "https://apicodeaderdocumentacion-production.up.railway.app/api/documentos/",
       )
-      .then((res) => setTareas(res.data))
+      .then((res) => setDocumentos(res.data))
       .catch((err) => console.log(err));
   }, []);
 
-  const agregarTarea = (nuevaTarea) => {
-    setTareas([nuevaTarea, ...tareas]);
-  };
-
-  const toggleCompletada = (id) => {
-    axios
-      .patch(
-        `https://apicodeaderdocumentacion-production.up.railway.app/api/tareas/${id}/toggle-completada/`,
-      )
-      .then((res) => {
-        const nuevasTareas = tareas.map((tarea) =>
-          tarea.id === id ? res.data : tarea,
-        );
-        setTareas(nuevasTareas);
-      })
-      .catch((err) => console.log(err));
+  const agregarDocumento = (nuevoDocumento) => {
+    setDocumentos([nuevoDocumento, ...documentos]);
   };
 
   return (
     <div>
-      <h1>Lista de Tareas</h1>
-      <FormularioTarea onTareaCreada={agregarTarea} />
+      <h1>Lista de Documentos</h1>
+
+      <FormularioDocumento onDocumentoCreado={agregarDocumento} />
+
       <ul>
-        {tareas.map((tarea) => (
-          <li
-            key={tarea.id}
-            style={{ cursor: "pointer" }}
-            onClick={() => toggleCompletada(tarea.id)}
-          >
-            {tarea.titulo} - {tarea.completada ? "✔️" : "❌"}
+        {documentos.map((doc) => (
+          <li key={doc.id}>
+            <strong>{doc.titulo}</strong> — {doc.slug}
           </li>
         ))}
       </ul>
