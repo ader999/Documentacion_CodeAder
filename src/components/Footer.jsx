@@ -1,0 +1,173 @@
+// src/components/Footer.jsx
+import React from "react";
+
+// Placeholder SVGs - Reemplázalos con los correctos o usa una librería de iconos
+const LogoSesameText = () => (
+  <div className="w-40 h-10 flex items-center justify-center">
+    <svg fill="none" viewBox="0 0 102 16" className="w-full h-full text-white">
+      {/* Texto "CodeD" */}
+      <text
+        x="0"
+        y="12"
+        fill="currentColor"
+        fontSize="20"
+        fontFamily="Arial, sans-serif"
+        fontWeight="bold"
+      >
+        CodeD
+      </text>
+
+      {/* Si quieres agregar un path, va aquí */}
+      {/* <path d="..." fill="currentColor" /> */}
+    </svg>
+  </div>
+);
+
+const IconX = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 51 50"
+    className="block w-7 h-7 text-white"
+  >
+    {" "}
+    {/* w/h-[var(--s28)] / w/h-[var(--s40)] */}
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M11.423 7.5a3 3 0 0 0-3 3v29a3 3 0 0 0 3 3h29a3 3 0 0 0 3-3v-29a3 3 0 0 0-3-3zm24.615 7h-3.51l-5.774 6.72-5.034-6.72h-7.297l8.683 11.48-8.221 9.52h3.51l6.374-7.327L30.31 35.5h7.112l-9.052-12.087zM33.22 33.353h-1.94L18.535 16.507h2.124z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const IconLinkedIn = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 51 50"
+    className="block w-7 h-7 text-white"
+  >
+    {" "}
+    {/* w/h-[var(--s28)] / w/h-[var(--s40)] */}
+    <path
+      fill="currentColor"
+      d="M37.398 37.823h-5.186V29.7c0-1.936-.034-4.43-2.697-4.43-2.7 0-3.114 2.11-3.114 4.29v8.261h-5.186V21.121h4.979v2.282h.07a5.46 5.46 0 0 1 4.911-2.697c5.256 0 6.226 3.457 6.226 7.955zM15.364 18.838a3.01 3.01 0 1 1-.001-6.018 3.01 3.01 0 0 1 0 6.018m2.593 18.985h-5.192V21.12h5.192zm22.027-29.82H10.159a2.554 2.554 0 0 0-2.582 2.523v29.949A2.556 2.556 0 0 0 10.159 43h29.825a2.56 2.56 0 0 0 2.593-2.525V10.523a2.56 2.56 0 0 0-2.593-2.522"
+    />
+  </svg>
+);
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  // Reemplaza esta URL con la de tu video
+  const videoSrc =
+    "https://storage.googleapis.com/sesame-dev-public/video/UpdateFade_smaller.mp4";
+
+  return (
+    <footer className="relative text-white pt-16 md:pt-24 pb-12 md:pb-20 overflow-hidden">
+      {/* Fondo de video y overlay */}
+      <div className="absolute inset-0 -z-10">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          src={videoSrc} // URL del video aquí
+        >
+          Tu navegador no soporta videos HTML5.
+        </video>
+        {/* Overlay oscuro */}
+        <div className="absolute inset-0 bg-black/20"></div>
+      </div>
+
+      {/* Contenedor del contenido centrado */}
+      <div className="relative z-10 max-w-screen-2xl mx-auto px-6 md:px-10 lg:px-20 flex flex-col items-start">
+        {/* Logo de texto */}
+        <div className="pb-10 md:pb-12">
+          <LogoSesameText />
+        </div>
+
+        {/* Separador (visible solo en desktop según HTML original, aunque visualmente puede estar en ambos) */}
+        {/* <hr className="border-white/20 w-full my-6 md:my-8 hidden md:block" /> */}
+
+        {/* Navegación principal y Social (Desktop) */}
+        <div className="w-full flex flex-col md:flex-row justify-between items-center mb-8 md:mb-6">
+          <nav className="flex flex-col md:flex-row text-sm text-gray-200 opacity-80 gap-6 md:gap-8 mb-8 md:mb-0">
+            <a href="/" className="hover:text-white transition-colors">
+              Home
+            </a>
+            <a href="/" className="hover:text-white transition-colors">
+              Research
+            </a>
+            <a href="/team" className="hover:text-white transition-colors">
+              Team
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Contact us
+            </a>
+          </nav>
+          {/* Iconos Sociales (Desktop) */}
+          <div className="hidden md:flex gap-6">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Sigueme en Twitter"
+            >
+              <IconX /> {/* Tamaño por defecto w-7 h-7 */}
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Sesame on LinkedIn"
+            >
+              <IconLinkedIn /> {/* Tamaño por defecto w-7 h-7 */}
+            </a>
+          </div>
+        </div>
+
+        {/* Separador */}
+        <hr className="border-white/20 w-full my-6 md:my-8" />
+
+        {/* Iconos Sociales (Mobile) */}
+        <div className="flex md:hidden gap-8 mb-10">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Sigueme en Twitter"
+          >
+            {/* Icono más grande para móvil */}
+            <IconX />
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Sigueme en LinkedIn"
+          >
+            {/* Icono más grande para móvil */}
+            <IconLinkedIn />
+          </a>
+        </div>
+
+        {/* Copyright y Legales */}
+        <div className="w-full flex flex-col-reverse sm:flex-row justify-between gap-6 text-xs text-white/50 md:text-white/90">
+          <p>Copyright © {currentYear} CodeAder. All rights reserved.</p>
+          <div className="flex gap-6">
+            <a href="/privacy" className="hover:text-white transition-colors">
+              Privacy
+            </a>
+            <a href="/terms" className="hover:text-white transition-colors">
+              Terms
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
