@@ -2,6 +2,14 @@
 import React from "react";
 
 function Header() {
+  const p_top = "50,15";
+  const p_bl = "15,85"; // bottom-left
+  const p_br = "85,85"; // bottom-right
+  const p_mid_l = "32.5,50"; // midpoint left side
+  const p_mid_r = "67.5,50"; // midpoint right side
+  const p_mid_b = "50,85"; // midpoint base
+  // --- FIN DE LAS DEFINICIONES ---
+
   return (
     // Clases clave: h-screen (ocupa altura) sticky top-0 (se pega arriba al scrollear)
     <aside className="w-[180px] h-screen sticky top-0 bg-gray-50 py-8 px-4 border-r border-gray-200">
@@ -9,15 +17,27 @@ function Header() {
       <div className="flex flex-col items-start mb-6">
         <a href="/" className="relative block mb-4">
           <svg
+            width="50"
+            height="50"
+            viewBox="0 0 100 100"
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 21 24"
-            className="w-[1.125rem] h-[1.25rem] text-gray-900"
+            aria-label="Logo Triángulo Fragmentado"
           >
-            <path
-              fill="currentColor"
-              d="M20.556 11.936V23.87c-2.16 0-4.184-.582-5.93-1.598a11.94 11.94 0 0 1-5.93-10.337V0c2.16 0 4.184.582 5.93 1.598a11.94 11.94 0 0 1 5.93 10.338M2.926.798A5.7 5.7 0 0 0 0 0v5.968a5.99 5.99 0 0 0 2.925 5.169c.86.509 1.86.798 2.925.798V5.969A5.99 5.99 0 0 0 2.925.798"
-            ></path>
+            {/* Triángulo superior */}
+            <polygon
+              className="fill-black"
+              points={`${p_top} ${p_mid_r} ${p_mid_l}`}
+            />
+            {/* Triángulo inferior izquierdo */}
+            <polygon
+              className="fill-black"
+              points={`${p_bl} ${p_mid_b} ${p_mid_l}`}
+            />
+            {/* Triángulo inferior derecho */}
+            <polygon
+              className="fill-black"
+              points={`${p_br} ${p_mid_b} ${p_mid_r}`}
+            />
           </svg>
         </a>
         <div className="flex flex-col gap-4">

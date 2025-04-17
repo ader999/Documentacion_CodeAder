@@ -1,11 +1,10 @@
 // src/components/Footer.jsx
-import React from "react";
+import React, { useRef, useEffect } from "react"; // <--- Importa useRef y useEffect
 
-// Placeholder SVGs - Reemplázalos con los correctos o usa una librería de iconos
+// --- Tus componentes SVG (LogoSesameText, IconX, IconLinkedIn) permanecen igual ---
 const LogoSesameText = () => (
   <div className="w-40 h-10 flex items-center justify-center">
     <svg fill="none" viewBox="0 0 102 16" className="w-full h-full text-white">
-      {/* Texto "CodeD" */}
       <text
         x="0"
         y="12"
@@ -16,9 +15,6 @@ const LogoSesameText = () => (
       >
         CodeD
       </text>
-
-      {/* Si quieres agregar un path, va aquí */}
-      {/* <path d="..." fill="currentColor" /> */}
     </svg>
   </div>
 );
@@ -30,8 +26,6 @@ const IconX = () => (
     viewBox="0 0 51 50"
     className="block w-7 h-7 text-white"
   >
-    {" "}
-    {/* w/h-[var(--s28)] / w/h-[var(--s40)] */}
     <path
       fill="currentColor"
       fillRule="evenodd"
@@ -48,48 +42,75 @@ const IconLinkedIn = () => (
     viewBox="0 0 51 50"
     className="block w-7 h-7 text-white"
   >
-    {" "}
-    {/* w/h-[var(--s28)] / w/h-[var(--s40)] */}
     <path
       fill="currentColor"
       d="M37.398 37.823h-5.186V29.7c0-1.936-.034-4.43-2.697-4.43-2.7 0-3.114 2.11-3.114 4.29v8.261h-5.186V21.121h4.979v2.282h.07a5.46 5.46 0 0 1 4.911-2.697c5.256 0 6.226 3.457 6.226 7.955zM15.364 18.838a3.01 3.01 0 1 1-.001-6.018 3.01 3.01 0 0 1 0 6.018m2.593 18.985h-5.192V21.12h5.192zm22.027-29.82H10.159a2.554 2.554 0 0 0-2.582 2.523v29.949A2.556 2.556 0 0 0 10.159 43h29.825a2.56 2.56 0 0 0 2.593-2.525V10.523a2.56 2.56 0 0 0-2.593-2.522"
     />
   </svg>
 );
+// ---------------------------------------------------------------------------
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  // Reemplaza esta URL con la de tu video
-  const videoSrc =
-    "https://storage.googleapis.com/sesame-dev-public/video/UpdateFade_smaller.mp4";
+  const videoSrc = "/videos/footer.mp4";
+  const videoRef = useRef(null); // <--- Crea la referencia para el video
+
+  // --- Lógica para reiniciar el video ---
+  useEffect(() => {
+    const videoElement = videoRef.current;
+
+    if (!videoElement) return;
+
+    const handleWaiting = () => {
+      console.log("Video background en espera (buffering)... Reiniciando.");
+      if (
+        !videoElement.paused &&
+        !videoElement.ended &&
+        videoElement.readyState > 2
+      ) {
+        videoElement.currentTime = 0;
+        videoElement.play().catch((error) => {
+          console.error("Error al intentar reanudar video del footer:", error);
+        });
+      }
+    };
+
+    videoElement.addEventListener("waiting", handleWaiting);
+
+    // Función de limpieza para remover el listener
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener("waiting", handleWaiting);
+      }
+    };
+  }, []); // <--- Array de dependencias vacío, se ejecuta solo al montar/desmontar
 
   return (
     <footer className="relative text-white pt-16 md:pt-24 pb-12 md:pb-20 overflow-hidden">
       {/* Fondo de video y overlay */}
       <div className="absolute inset-0 -z-10">
         <video
+          ref={videoRef} // <--- Asigna la referencia al elemento video
           autoPlay
           loop
           muted
           playsInline
           className="w-full h-full object-cover"
-          src={videoSrc} // URL del video aquí
+          src={videoSrc}
         >
           Tu navegador no soporta videos HTML5.
         </video>
         {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-black/20"></div>{" "}
+        {/* Ajusta la opacidad si es necesario */}
       </div>
 
-      {/* Contenedor del contenido centrado */}
+      {/* Contenedor del contenido centrado (resto del footer sin cambios) */}
       <div className="relative z-10 max-w-screen-2xl mx-auto px-6 md:px-10 lg:px-20 flex flex-col items-start">
         {/* Logo de texto */}
         <div className="pb-10 md:pb-12">
           <LogoSesameText />
         </div>
-
-        {/* Separador (visible solo en desktop según HTML original, aunque visualmente puede estar en ambos) */}
-        {/* <hr className="border-white/20 w-full my-6 md:my-8 hidden md:block" /> */}
 
         {/* Navegación principal y Social (Desktop) */}
         <div className="w-full flex flex-col md:flex-row justify-between items-center mb-8 md:mb-6">
@@ -115,7 +136,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               aria-label="Sigueme en Twitter"
             >
-              <IconX /> {/* Tamaño por defecto w-7 h-7 */}
+              <IconX />
             </a>
             <a
               href="#"
@@ -123,7 +144,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               aria-label="Sesame on LinkedIn"
             >
-              <IconLinkedIn /> {/* Tamaño por defecto w-7 h-7 */}
+              <IconLinkedIn />
             </a>
           </div>
         </div>
@@ -139,7 +160,6 @@ const Footer = () => {
             rel="noopener noreferrer"
             aria-label="Sigueme en Twitter"
           >
-            {/* Icono más grande para móvil */}
             <IconX />
           </a>
           <a
@@ -148,7 +168,6 @@ const Footer = () => {
             rel="noopener noreferrer"
             aria-label="Sigueme en LinkedIn"
           >
-            {/* Icono más grande para móvil */}
             <IconLinkedIn />
           </a>
         </div>
