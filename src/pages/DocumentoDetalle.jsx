@@ -1,33 +1,43 @@
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 function DocumentoDetalle() {
   const { id } = useParams();
   const [documento, setDocumento] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(
-      `https://apicodeaderdocumentacion-production.up.railway.app/documentos/`,
+      `https://apicodeaderdocumentacion-production.up.railway.app/api/documentos/${id}/`,
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Documento no encontrado");
+        }
+        return res.json();
+      })
       .then((data) => setDocumento(data))
-      .catch((err) => console.error("Error cargando documento:", err));
+      .catch((err) => setError(err.message));
   }, [id]);
 
-  if (!documento) return <p>Cargando documento...</p>;
+  if (error) return <div>Error: {error}</div>;
+  if (!documento) return <div>Cargando...</div>;
+
+  const archivoUrl = `https://apicodeaderdocumentacion-production.up.railway.app${documento.archivo}`;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">{documento.titulo}</h2>
-      <p className="text-gray-700">{documento.descripcion}</p>
+    <div className="bg-white p-6 rounded-lg shadow">
+      <h2 className="text-xl font-bold mb-4">{documento.titulo}</h2>
+      <p className="mb-4">{documento.descripcion}</p>
+      <div dangerouslySetInnerHTML={{ __html: documento.contenido }} />
       {documento.archivo && (
         <a
-          href={documento.archivo}
+          href={archivoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="block mt-4 text-blue-600 underline"
+          className="text-blue-600 underline"
         >
-          Descargar documento
+          Ver archivo PDF
         </a>
       )}
     </div>

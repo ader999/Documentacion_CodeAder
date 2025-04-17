@@ -25,56 +25,40 @@ const Home = () => {
       </h1>
       <div className="text-base md:text-xl font-medium leading-tight tracking-wide text-gray-600">
         <ul>
-          {documentos.map((doc) => (
-            <li key={doc.id} className="documento">
-              <img
-                class="w-full h-full object-cover transition-opacity duration-300"
-                loading="lazy"
-                sizes="100vw"
-                src={`https://apicodeaderdocumentacion-production.up.railway.app${doc.portada}`}
-                className="w-full h-auto mb-4"
-              />
+          {documentos.map((doc, index) => {
+            const cleanResumen = doc.resumen
+              .replace(/<[^>]+>/g, "") // elimina etiquetas HTML
+              .slice(0, 300); // corta a 300 caracteres
 
-              <div dangerouslySetInnerHTML={{ __html: doc.resumen }} />
-              <Link
-                to={`/documentos/${doc.id}`}
-                className="text-blue-500 hover:underline"
-              >
-                <p className="mt-5 font-semibold text-gray-800">{doc.titulo}</p>
-              </Link>
-            </li>
-          ))}
+            return (
+              <li key={doc.id} className="documento">
+                {index !== 0 && (
+                  <hr className="border-gray-300 my-6 border-t-2" />
+                )}
+
+                <img
+                  src={`https://apicodeaderdocumentacion-production.up.railway.app${doc.portada}`}
+                  alt={`Portada de ${doc.titulo}`}
+                  className="w-full h-auto mb-4 object-cover transition-opacity duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.08)] rounded-md"
+                  loading="lazy"
+                  sizes="100vw"
+                />
+
+                <p className="text-gray-700">{cleanResumen}...</p>
+
+                <Link
+                  to={`/documentos/${doc.id}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  <p className="mt-5 font-semibold text-gray-800">
+                    {doc.titulo}
+                  </p>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
-      <hr className="border-t border-gray-200" />
-      <div>
-        <p className="text-base md:text-xl font-medium text-gray-500 pointer-events-none select-none">
-          01
-        </p>
-        <div className="mt-6 flex flex-col gap-6 md:gap-8">
-          <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight tracking-tight text-gray-900">
-              A personal companion
-            </h2>
-            <p className="mt-4 text-base md:text-xl font-medium leading-tight tracking-wide text-gray-600">
-              An ever-present brilliant friend and conversationalist, keeping
-              you informed and organized, helping you be a better version of
-              yourself.
-              <br />
-              Try our research{" "}
-              <a
-                href="/research/crossing_the_uncanny_valley_of_voice#demo"
-                className="text-blue-600 hover:text-blue-800 underline"
-              >
-                demo
-              </a>
-              .
-            </p>
-          </div>
-          {/* Imagen/Enlace iría aquí */}
-        </div>
-      </div>
-      {/* Otras secciones irían aquí */}
     </div>
   );
 };

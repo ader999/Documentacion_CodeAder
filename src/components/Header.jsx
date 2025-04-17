@@ -1,5 +1,6 @@
 // src/components/Header.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
   const p_top = "50,15";
@@ -59,12 +60,7 @@ function Header() {
               </a>
             </li>
             <li>
-              <a
-                href="/team"
-                className="block text-base font-medium text-gray-600 opacity-50 transition-opacity duration-300 hover:opacity-100 hover:font-semibold no-underline"
-              >
-                Team
-              </a>
+              <Link to="/crear-documento">Subir Documento</Link>
             </li>
           </ul>
           <div className="flex flex-col gap-4">
