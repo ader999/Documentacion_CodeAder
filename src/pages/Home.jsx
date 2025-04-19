@@ -17,7 +17,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-10 md:gap-16 lg:gap-20 pb-20 md:pb-24 lg:pb-32 max-w-4xl">
+    <div className="flex flex-col gap-10 md:gap-16 lg:gap-20 pb-20 md:pb-24 lg:pb-32 max-w-[60%] mx-auto">
       <h1 className="text-4xl md:text-5xl font-medium leading-none tracking-tight text-gray-900">
         <span className="block">Ultimos</span>
         <span className="block">Documentos</span>
@@ -29,6 +29,12 @@ const Home = () => {
             const cleanResumen = doc.resumen
               .replace(/<[^>]+>/g, "") // elimina etiquetas HTML
               .slice(0, 300); // corta a 300 caracteres
+
+            console.log(`HOME - ID: ${doc.id}, Portada Value:`, doc.portada);
+            console.log(
+              `HOME - ID: ${doc.id}, Generated URL:`,
+              `https://apicodeaderdocumentacion-production.up.railway.app${doc.portada}`,
+            );
 
             return (
               <li key={doc.id} className="documento">
