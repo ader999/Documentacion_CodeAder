@@ -124,28 +124,26 @@ const Footer = () => {
             <a href="/team" className="hover:text-white transition-colors">
               Team
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <button className="hover:text-white transition-colors bg-transparent border-0 p-0 text-inherit cursor-pointer">
               Contact us
-            </a>
+            </button>
           </nav>
           {/* Iconos Sociales (Desktop) */}
           <div className="hidden md:flex gap-6">
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              className="bg-transparent border-0 p-0 cursor-pointer"
               aria-label="Sigueme en Twitter"
+              onClick={() => window.open('https://twitter.com/codeader', '_blank', 'noopener,noreferrer')}
             >
               <IconX />
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Sesame on LinkedIn"
+            </button>
+            <button
+              className="bg-transparent border-0 p-0 cursor-pointer"
+              aria-label="Sigueme en LinkedIn"
+              onClick={() => window.open('https://linkedin.com/company/codeader', '_blank', 'noopener,noreferrer')}
             >
               <IconLinkedIn />
-            </a>
+            </button>
           </div>
         </div>
 
@@ -154,22 +152,20 @@ const Footer = () => {
 
         {/* Iconos Sociales (Mobile) */}
         <div className="flex md:hidden gap-8 mb-10">
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            className="bg-transparent border-0 p-0 cursor-pointer"
             aria-label="Sigueme en Twitter"
+            onClick={() => window.open('https://twitter.com/codeader', '_blank', 'noopener,noreferrer')}
           >
             <IconX />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+          </button>
+          <button
+            className="bg-transparent border-0 p-0 cursor-pointer"
             aria-label="Sigueme en LinkedIn"
+            onClick={() => window.open('https://linkedin.com/company/codeader', '_blank', 'noopener,noreferrer')}
           >
             <IconLinkedIn />
-          </a>
+          </button>
         </div>
 
         {/* Copyright y Legales */}

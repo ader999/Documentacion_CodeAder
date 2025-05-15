@@ -1,6 +1,23 @@
 import React, { useState, useEffect } from "react"; // Importa useEffect
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+// Función para obtener el valor de una cookie
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
 
 const CrearDocumento = () => {
   const [titulo, setTitulo] = useState("");
@@ -22,9 +39,26 @@ const CrearDocumento = () => {
     const fetchCategorias = async () => {
       setLoadingCategorias(true);
       try {
+        // Obtener el token de autenticación del usuario almacenado
+        const storedUser = localStorage.getItem('user');
+        let headers = {};
+        
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          const accessToken = userData.accessToken;
+          if (accessToken) {
+            headers['Authorization'] = `Bearer ${accessToken}`;
+          }
+        }
+
         const response = await fetch(
           "https://apicodeaderdocumentacion-production.up.railway.app/api/categorias/",
-        ); // USA LA URL DE TU API
+          {
+            method: "GET",
+            headers: headers
+          }
+        );
+          
         if (response.ok) {
           const data = await response.json();
           setAvailableCategorias(data);
@@ -83,6 +117,17 @@ const CrearDocumento = () => {
     setMensaje("");
     setTipoMensaje("");
 
+    // Verificar si el usuario está autenticado
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      setMensaje("Error: Debes iniciar sesión para crear documentos.");
+      setTipoMensaje("error");
+      return;
+    }
+
+    const userData = JSON.parse(storedUser);
+    const accessToken = userData.accessToken;
+
     const formData = new FormData();
     formData.append("titulo", titulo);
     formData.append("resumen", resumen);
@@ -103,27 +148,34 @@ const CrearDocumento = () => {
     // Django REST Framework espera múltiples valores para el mismo key en ManyToManyField
     selectedCategorias.forEach((id) => {
       formData.append("categorias", id.toString());
-    });
-    // -------------------------------------------
+      });
+      // ------------------------------------------
 
-    // Validar si se requiere al menos una categoría (opcional, depende de tus reglas)
-    // if (selectedCategorias.length === 0) {
-    //     setMensaje("Error: Debes seleccionar al menos una categoría.");
-    //     setTipoMensaje("error");
-    //     return;
-    // }
 
-    try {
-      const response = await fetch(
-        "https://apicodeaderdocumentacion-production.up.railway.app/api/documentos/crear/",
-        {
-          method: "POST",
-          body: formData,
-          credentials: "include",
-        },
-      );
+      // Validar si se requiere al menos una categoría (opcional, depende de tus reglas)
+      // if (selectedCategorias.length === 0) {
+      //     setMensaje("Error: Debes seleccionar al menos una categoría.");
+      //     setTipoMensaje("error");
+      //     return;
+      // }
 
-      if (response.ok) {
+      const csrftoken = getCookie('csrftoken'); // Obtener el token CSRF
+
+      try {
+        const response = await fetch(
+          "https://apicodeaderdocumentacion-production.up.railway.app/api/documentos/crear/",
+          {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+            headers: {
+              'X-CSRFToken': csrftoken, // Enviar el token CSRF
+              'Authorization': `Bearer ${accessToken}` // Añadir el token de autenticación
+            },
+          },
+        );
+
+        if (response.ok) {
         const data = await response.json();
         setMensaje(`Documento "${data.titulo}" creado correctamente.`);
         setTipoMensaje("success");
@@ -164,6 +216,7 @@ const CrearDocumento = () => {
     } catch (error) {
       setMensaje(`Error en la petición: ${error.message}`);
       setTipoMensaje("error");
+      console.error("Error en fetch al crear documento:", error); // Log detallado del error
     }
   };
 
@@ -294,12 +347,12 @@ const CrearDocumento = () => {
                 const data = editor.getData();
                 setContenido(data);
               }}
-              config={
-                {
-                  /* configuraciones */
-                }
-              }
+              config={{
+                // Opciones de configuración de CKEditor 5 si las necesitas
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'outdent', 'indent', '|', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'undo', 'redo']
+              }}
             />
+
           </div>
         </div>
 
