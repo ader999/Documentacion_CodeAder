@@ -7,10 +7,6 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 
-// Páginas existentes (anterior sistema)
-import DocumentoDetalle from "./pages/DocumentoDetalle";
-import CrearDocumento from "./pages/CrearDocumento";
-
 // Nuevas páginas (sistema de documentación web)
 import ListaDocumentaciones from "./pages/ListaDocumentaciones";
 import DetalleDocumentacion from "./pages/DetalleDocumentacion";
@@ -30,10 +26,6 @@ function App() {
                 <main className="px-8 sm:px-10 md:px-12 lg:px-16 py-10">
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    
-                    {/* Rutas antiguas - se mantienen para compatibilidad */}
-                    <Route path="/documentos/:id" element={<DocumentoDetalle />} />
-                    <Route path="/crear-documento" element={<CrearDocumento />} />
                     
                     {/* Nuevas rutas para el sistema de documentación web */}
                     <Route path="/documentaciones" element={<ListaDocumentaciones />} />

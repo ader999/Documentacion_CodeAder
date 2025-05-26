@@ -155,7 +155,7 @@ const FormularioSeccion = () => {
         orden: parseInt(formData.orden, 10)
       };
       
-      const response = await createSeccion(dataToSend);
+      await createSeccion(dataToSend);
       
       setMensaje({
         tipo: "exito",
